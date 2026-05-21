@@ -6,13 +6,9 @@ import com.utnutri.backend.consulta.dto.ConsultaUpdateRequest;
 import com.utnutri.backend.paciente.Paciente;
 import com.utnutri.backend.paciente.PacienteRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.apache.coyote.ContinueResponseTiming;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 
@@ -27,7 +23,7 @@ public class ConsultaService {
     public List<ConsultaDTO> getAll(Long idPaciente, Long nutriId) {
         verificarPropiedadPaciente(idPaciente,  nutriId);
 
-        return consultaRepository.findByPacienteId(idPaciente)
+        return consultaRepository.findByPacienteIdOrderByFechaDesc(idPaciente)
                 .stream()
                 .map(ConsultaMapper::toDTO)
                 .toList();

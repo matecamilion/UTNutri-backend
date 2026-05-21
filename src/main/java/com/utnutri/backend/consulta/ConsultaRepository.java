@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
-    List<Consulta> findByPacienteId(Long pacienteId);
     Optional<Consulta> findByIdAndPacienteId(Long id, Long pacienteId);
     List<Consulta> findByPacienteIdOrderByFechaDesc(Long pacienteId);
 }

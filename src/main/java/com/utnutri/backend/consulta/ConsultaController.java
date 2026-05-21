@@ -24,7 +24,7 @@ public class ConsultaController {
         return consultaService.getAll(pacienteId, nutri.getId());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idConsulta}")
     public ConsultaDTO getById(@PathVariable Long pacienteId,
                                      @AuthenticationPrincipal Nutricionista nutri,
                                      @PathVariable Long idConsulta) {
@@ -39,7 +39,7 @@ public class ConsultaController {
         return consultaService.create(pacienteId, request, nutri.getId());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{idConsulta}")
     public ConsultaDTO update(@PathVariable Long pacienteId,
                               @PathVariable Long idConsulta,
                               @Valid @RequestBody ConsultaUpdateRequest request,
@@ -47,7 +47,7 @@ public class ConsultaController {
         return consultaService.update(pacienteId, idConsulta, request, nutri.getId());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idConsulta}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long pacienteId,
                        @PathVariable Long id,
