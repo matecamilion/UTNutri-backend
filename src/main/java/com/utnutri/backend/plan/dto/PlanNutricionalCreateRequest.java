@@ -1,4 +1,15 @@
 package com.utnutri.backend.plan.dto;
 
-public class PlanNutricionalRequest {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class PlanNutricionalCreateRequest {
+    private String desayuno;
+    private String almuerzo;
+    private String merienda;
+    private String cena;
+    private String snacks;
+    private String notas;
 }
