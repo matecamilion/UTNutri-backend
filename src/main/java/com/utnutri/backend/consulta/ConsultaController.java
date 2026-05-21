@@ -50,9 +50,9 @@ public class ConsultaController {
     @DeleteMapping("/{idConsulta}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long pacienteId,
-                       @PathVariable Long id,
+                       @PathVariable Long idConsulta,
                        @AuthenticationPrincipal Nutricionista nutri) {
-        consultaService.delete(pacienteId, id, nutri.getId());
+        consultaService.delete(pacienteId, idConsulta, nutri.getId());
     }
 
 }
