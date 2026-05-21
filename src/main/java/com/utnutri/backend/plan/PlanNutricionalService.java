@@ -2,9 +2,8 @@ package com.utnutri.backend.plan;
 
 import com.utnutri.backend.paciente.Paciente;
 import com.utnutri.backend.paciente.PacienteRepository;
-import com.utnutri.backend.plan.dto.PlanNutricionalCreateRequest;
+import com.utnutri.backend.plan.dto.PlanNutricionalRequest;
 import com.utnutri.backend.plan.dto.PlanNutricionalDTO;
-import com.utnutri.backend.plan.dto.PlanNutricionalUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,39 +23,20 @@ public class PlanNutricionalService {
         return PlanNutricionalMapper.toDTO(plan);
     }
 
-    // ─── Crear ───────────────────────────────────────────────────────────────
-    public PlanNutricionalDTO create(Long pacienteId, PlanNutricionalCreateRequest request, Long nutriId) {
+    public PlanNutricionalDTO upsert(Long pacienteId, PlanNutricionalRequest request, Long nutriId) {
         Paciente paciente = verificarPropiedadPaciente(pacienteId, nutriId);
 
-        if (planNutricionalRepository.findByPacienteId(pacienteId).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "El paciente ya tiene un plan nutricional asignado");
-        }
+        // Busca el plan existente, o crea uno nuevo si no hay
+        PlanNutricional plan = planNutricionalRepository.findByPacienteId(pacienteId)
+                .orElseGet(() -> PlanNutricional.builder().paciente(paciente).build());
 
-        PlanNutricional plan = PlanNutricional.builder()
-                .paciente(paciente)
-                .desayuno(request.getDesayuno())
-                .almuerzo(request.getAlmuerzo())
-                .merienda(request.getMerienda())
-                .cena(request.getCena())
-                .snacks(request.getSnacks())
-                .notas(request.getNotas())
-                .build();
-
-        return PlanNutricionalMapper.toDTO(planNutricionalRepository.save(plan));
-    }
-
-    // ─── Actualizar ──────────────────────────────────────────────────────────
-    public PlanNutricionalDTO update(Long pacienteId, PlanNutricionalUpdateRequest request, Long nutriId) {
-        verificarPropiedadPaciente(pacienteId, nutriId);
-        PlanNutricional plan = findPlan(pacienteId);
-
-        if (request.getDesayuno() != null)  plan.setDesayuno(request.getDesayuno());
-        if (request.getAlmuerzo() != null)  plan.setAlmuerzo(request.getAlmuerzo());
-        if (request.getMerienda() != null)  plan.setMerienda(request.getMerienda());
-        if (request.getCena() != null)      plan.setCena(request.getCena());
-        if (request.getSnacks() != null)    plan.setSnacks(request.getSnacks());
-        if (request.getNotas() != null)     plan.setNotas(request.getNotas());
+        // Setea todos los campos
+        plan.setDesayuno(request.getDesayuno());
+        plan.setAlmuerzo(request.getAlmuerzo());
+        plan.setMerienda(request.getMerienda());
+        plan.setCena(request.getCena());
+        plan.setSnacks(request.getSnacks());
+        plan.setNotas(request.getNotas());
 
         return PlanNutricionalMapper.toDTO(planNutricionalRepository.save(plan));
     }

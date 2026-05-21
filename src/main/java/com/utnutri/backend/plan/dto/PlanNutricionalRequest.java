@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PlanNutricionalUpdateRequest {
+public class PlanNutricionalRequest {
     private String desayuno;
     private String almuerzo;
     private String merienda;

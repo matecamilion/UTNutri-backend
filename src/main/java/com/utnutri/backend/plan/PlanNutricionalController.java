@@ -1,9 +1,8 @@
 package com.utnutri.backend.plan;
 
 import com.utnutri.backend.nutricionista.Nutricionista;
-import com.utnutri.backend.plan.dto.PlanNutricionalCreateRequest;
+import com.utnutri.backend.plan.dto.PlanNutricionalRequest;
 import com.utnutri.backend.plan.dto.PlanNutricionalDTO;
-import com.utnutri.backend.plan.dto.PlanNutricionalUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,19 +22,11 @@ public class PlanNutricionalController {
         return planNutricionalService.get(pacienteId, nutri.getId());
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PlanNutricionalDTO create(@PathVariable Long pacienteId,
-                                     @Valid @RequestBody PlanNutricionalCreateRequest request,
-                                     @AuthenticationPrincipal Nutricionista nutri) {
-        return planNutricionalService.create(pacienteId, request, nutri.getId());
-    }
-
     @PutMapping
-    public PlanNutricionalDTO update(@PathVariable Long pacienteId,
-                                     @Valid @RequestBody PlanNutricionalUpdateRequest request,
+    public PlanNutricionalDTO upsert(@PathVariable Long pacienteId,
+                                     @Valid @RequestBody PlanNutricionalRequest request,
                                      @AuthenticationPrincipal Nutricionista nutri) {
-        return planNutricionalService.update(pacienteId, request, nutri.getId());
+        return planNutricionalService.upsert(pacienteId, request, nutri.getId());
     }
 
     @DeleteMapping
