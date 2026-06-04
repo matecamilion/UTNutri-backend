@@ -1,5 +1,6 @@
 package com.utnutri.backend.nutricionista;
 
+import com.utnutri.backend.nutricionista.dto.NutricionistaCreateRequest;
 import com.utnutri.backend.nutricionista.dto.NutricionistaDTO;
 import com.utnutri.backend.nutricionista.dto.NutricionistaUpdateRequest;
 import jakarta.validation.Valid;
@@ -16,6 +17,11 @@ public class NutricionistaController {
 
     private final NutricionistaService nutricionistaService;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public NutricionistaDTO create(@Valid @RequestBody NutricionistaCreateRequest request) {
+        return nutricionistaService.create(request);
+    }
     @GetMapping
     public List<NutricionistaDTO> getAll() {
         return nutricionistaService.getAll();

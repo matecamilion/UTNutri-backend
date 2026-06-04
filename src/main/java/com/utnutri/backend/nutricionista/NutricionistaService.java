@@ -1,5 +1,6 @@
 package com.utnutri.backend.nutricionista;
 
+import com.utnutri.backend.nutricionista.dto.NutricionistaCreateRequest;
 import com.utnutri.backend.nutricionista.dto.NutricionistaDTO;
 import com.utnutri.backend.nutricionista.dto.NutricionistaUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,27 @@ public class NutricionistaService {
 
     private final NutricionistaRepository nutricionistaRepository;
     private final PasswordEncoder passwordEncoder;
+
+    // ─── Crear ───────────────────────────────────────────────────────────────
+    public NutricionistaDTO create(NutricionistaCreateRequest request) {
+        if (nutricionistaRepository.existsByUsername(request.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ya existe un nutricionista con ese username");
+        }
+        if (nutricionistaRepository.existsByEmail(request.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ya existe un nutricionista con ese email");
+        }
+
+        Nutricionista nuevo = Nutricionista.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .nombre(request.getNombre())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        return NutricionistaDTO.from(nutricionistaRepository.save(nuevo));
+    }
 
     // ─── Obtener todos ───────────────────────────────────────────────────────
     public List<NutricionistaDTO> getAll() {
