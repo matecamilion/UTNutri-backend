@@ -1,4 +1,4 @@
-package com.utnutri.backend.config;
+package com.utnutri.backend.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

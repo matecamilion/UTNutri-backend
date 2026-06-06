@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
@@ -22,5 +23,10 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
     List<Turno> findProximosByNutricionistaId(@Param("nutriId") Long nutriId,
                                               @Param("ahora") LocalDateTime ahora);
 
+    // Turnos de un paciente específico
     List<Turno> findByPacienteId(Long pacienteId);
+
+    // Turno por id verificando que pertenezca al nutri (multi-tenant en una sola query)
+    @Query("SELECT t FROM Turno t WHERE t.id = :id AND t.paciente.nutricionista.id = :nutriId")
+    Optional<Turno> findByIdAndNutricionistaId(@Param("id") Long id, @Param("nutriId") Long nutriId);
 }

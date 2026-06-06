@@ -1,4 +1,4 @@
-package com.utnutri.backend.config;
+package com.utnutri.backend.common.config;
 
 import com.utnutri.backend.auth.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
