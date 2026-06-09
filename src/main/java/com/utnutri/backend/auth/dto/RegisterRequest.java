@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
 
     @NotBlank(message = "El username es obligatorio")
-    @Size(max = 50)
+    @Size(min = 3, max = 50, message = "El username debe tener entre 3 y 50 caracteres")
     private String username;
 
     @NotBlank(message = "La contraseña es obligatoria")
