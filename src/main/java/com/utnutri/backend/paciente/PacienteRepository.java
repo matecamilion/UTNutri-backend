@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     List<Paciente> findByNutricionistaId(Long nutricionistaId);
     Optional<Paciente> findByIdAndNutricionistaId(Long id, Long nutricionistaId);
+    boolean existsByCorreoAndNutricionistaIdAndIdNot(String correo, Long nutricionistaId, Long id);
+    boolean existsByTelefonoAndNutricionistaIdAndIdNot(String telefono, Long nutricionistaId, Long id);
+    boolean existsByCorreoAndNutricionistaId(String correo, Long nutricionistaId);
+    boolean existsByTelefonoAndNutricionistaId(String telefono, Long nutricionistaId);
 }

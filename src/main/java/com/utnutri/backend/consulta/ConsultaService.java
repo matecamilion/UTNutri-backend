@@ -23,7 +23,7 @@ public class ConsultaService {
     public List<ConsultaDTO> getAll(Long idPaciente, Long nutriId) {
         verificarPropiedadPaciente(idPaciente,  nutriId);
 
-        return consultaRepository.findByPacienteIdOrderByFechaDesc(idPaciente)
+        return consultaRepository.findByPacienteIdOrderByFechaDescIdDesc(idPaciente)
                 .stream()
                 .map(ConsultaMapper::toDTO)
                 .toList();

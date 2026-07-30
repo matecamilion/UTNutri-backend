@@ -33,6 +33,13 @@ public class PacienteService {
 
     // ─── Crear ───────────────────────────────────────────────────────────────
     public PacienteDTO create(PacienteCreateRequest request, Nutricionista nutri) {
+        if (pacienteRepository.existsByCorreoAndNutricionistaId(request.getCorreo(), nutri.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya tenés un paciente con ese correo");
+        }
+        if (pacienteRepository.existsByTelefonoAndNutricionistaId(request.getTelefono(), nutri.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya tenés un paciente con ese teléfono");
+        }
+
         Paciente paciente = Paciente.builder()
                 .nutricionista(nutri)
                 .nombre(request.getNombre())
@@ -48,6 +55,15 @@ public class PacienteService {
     // ─── Actualizar ──────────────────────────────────────────────────────────
     public PacienteDTO update(Long id, PacienteUpdateRequest request, Long nutriId) {
         Paciente paciente = findOwned(id, nutriId);
+
+        if (request.getCorreo() != null
+                && pacienteRepository.existsByCorreoAndNutricionistaIdAndIdNot(request.getCorreo(), nutriId, id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya tenés un paciente con ese correo");
+        }
+        if (request.getTelefono() != null
+                && pacienteRepository.existsByTelefonoAndNutricionistaIdAndIdNot(request.getTelefono(), nutriId, id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya tenés un paciente con ese teléfono");
+        }
 
         if (request.getNombre() != null)          paciente.setNombre(request.getNombre());
         if (request.getGenero() != null)          paciente.setGenero(request.getGenero());
